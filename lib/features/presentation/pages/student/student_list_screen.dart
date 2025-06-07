@@ -78,14 +78,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
   }
 
   Future<void> _deleteStudent(String id) async {
-    setState(() => _isLoading = true);
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 500));
-    setState(() {
-      _allStudents.removeWhere((student) => student.id == id);
-      _filteredStudents = _allStudents;
-      _isLoading = false;
-    });
+    cubit.deleteStudent(id);
   }
 
   @override
@@ -313,7 +306,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                _deleteStudent(student.id);
+                                                _deleteStudent(student.studentId);
                                                 Navigator.pop(context);
                                               },
                                               child: AppText(

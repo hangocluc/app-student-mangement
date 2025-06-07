@@ -1,5 +1,8 @@
+import 'package:base_bloc_cubit/common/widget/app_toast/app_toast.dart';
 import 'package:base_bloc_cubit/features/domain/usecases/src/demo_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 
 import '../../../data/models/student/student_model.dart';
 import '../../model/student_model_ui.dart';
@@ -70,20 +73,22 @@ class StudentCubit extends Cubit<StudentState> {
 
   Future<void> deleteStudent(String maSV) async {
     try {
-      emit(const StudentStateLoading());
-      // Simulate network delay
+      EasyLoading.show();
       final data = await usecase.deleteStudent(maSV);
+      EasyLoading.dismiss();
       data.fold(
         (l) {
-          emit(StudentStateError(l.toString()));
+          showToastError(Get.context!, 'Something went wrong, please try again');
         },
         (r) {
-          emit(DeleteStudentStateSuccess(data: r ?? true));
+          showToastSuccess(Get.context!, 'Delete student successfully');
+          getStudents();
         },
       );
 
-      //  emit(StudentStateSuccess(_students));
     } catch (e) {
+      EasyLoading.dismiss();
+      showToastError(Get.context!, 'Something went wrong, please try again');
       emit(StudentStateError(e.toString()));
     }
   }
