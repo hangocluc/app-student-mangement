@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 // ignore: depend_on_referenced_packages
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/configure/exception/api_exception.dart';
@@ -46,6 +47,9 @@ class HandleErrorInterceptor extends Interceptor {
     log("Dio Error: ${error.response?.statusCode} ${error.toString()}");
     log("Error response: ${error.response}");
     log("DioException: ${err.toString()}");
+    if (kDebugMode) {
+      print(error.stackTrace);
+    }
 
     if (err.type == DioExceptionType.connectionError) {
       errorNoInternet?.call();

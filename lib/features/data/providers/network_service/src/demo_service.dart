@@ -21,7 +21,7 @@ abstract class DemoService {
   @GET(DemoApiPath.studentRoute)
   Future<ApiResponse<List<StudentModel>>> getStudents();
 
-  @DELETE(DemoApiPath.deleteStudent)
+  @DELETE('${DemoApiPath.studentRoute}/{maSV}')
   Future<ApiResponse> deleteStudent(@Path("maSV") String maSV);
 
   @POST(DemoApiPath.studentRoute)
@@ -30,6 +30,15 @@ abstract class DemoService {
     @Field("ngaySinh") String ngaySinh,
     @Field("gioiTinh") String gioiTinh,
     @Field("maLop") String maLop,
+  );
+
+  @PUT('${DemoApiPath.studentRoute}/{maSV}')
+  Future<ApiResponse> updateStudents(
+      @Field("hoTen") String hoTen,
+      @Field("ngaySinh") String ngaySinh,
+      @Field("gioiTinh") String gioiTinh,
+      @Field("maLop") String maLop,
+      @Path("maSV") String maSv,
   );
 
   @GET(DemoApiPath.classRoute)

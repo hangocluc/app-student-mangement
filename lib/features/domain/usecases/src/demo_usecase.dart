@@ -56,4 +56,13 @@ class DemoUsecase extends BaseUseCase<DemoEntity?, NoParams?> {
       return Left(error);
     }
   }
+
+  Future<Either<Exception, bool?>> updateStudents(StudentModel student) async {
+    try {
+      final response = await repository.updateStudents(student: student);
+      return Right(response);
+    } on Exception catch (error) {
+      return Left(error);
+    }
+  }
 }

@@ -154,6 +154,47 @@ class _DemoService implements DemoService {
   }
 
   @override
+  Future<ApiResponse<dynamic>> updateStudents(
+    String hoTen,
+    String ngaySinh,
+    String gioiTinh,
+    String maLop,
+    String maSv,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'hoTen': hoTen,
+      'ngaySinh': ngaySinh,
+      'gioiTinh': gioiTinh,
+      'maLop': maLop,
+    };
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiResponse<dynamic>>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/students/${maSv}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ApiResponse<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
   Future<ApiResponse<List<Class>>> getClasses() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

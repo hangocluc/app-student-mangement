@@ -63,7 +63,7 @@ class DemoRepositoryImpl implements DemoRepository {
         student.name ?? '',
         student.dateOfBirth ?? '',
         student.gender ?? '',
-        student.className ?? '',
+        student.classCode ?? '',
       );
       if (response.isSuccessResponse) {
         return true;
@@ -77,11 +77,30 @@ class DemoRepositoryImpl implements DemoRepository {
   }
 
   @override
+  Future<bool?> updateStudents({required StudentModel student}) async {
+    try {
+      final response = await demoService.updateStudents(
+        student.name ?? '',
+        student.dateOfBirth ?? '',
+        student.gender ?? '',
+        student.classCode ?? '',
+        student.studentId ?? ''
+      );
+      if (response.isSuccessResponse) {
+        return true;
+      }
+      throw Exception(response.message);
+    } catch (error) {
+      log('Error in getStudents: $error');
+      rethrow;
+    }
+  }
+
+  @override
   Future<List<Class>?> getClasses() async {
     try {
       final response = await demoService.getClasses();
       return response.data;
-      throw Exception(response.message);
     } catch (error) {
       log('Error in getStudents: $error');
       rethrow;

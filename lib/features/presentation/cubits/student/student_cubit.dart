@@ -5,7 +5,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/student/student_model.dart';
-import '../../model/student_model_ui.dart';
 import 'student_state.dart';
 
 class StudentCubit extends Cubit<StudentState> {
@@ -27,21 +26,6 @@ class StudentCubit extends Cubit<StudentState> {
     }
   }
 
-  Future<void> getStudent(String id) async {
-    try {
-      emit(const StudentStateLoading());
-      // Simulate network delay
-      await Future.delayed(const Duration(milliseconds: 500));
-      final student = _students.firstWhere(
-        (student) => student.id == id,
-        orElse: () => throw Exception('Student not found'),
-      );
-      //  emit(StudentStateSuccess([student]));
-    } catch (e) {
-      emit(StudentStateError(e.toString()));
-    }
-  }
-
   Future<void> createStudent(StudentModel student) async {
     try {
       emit(const StudentStateLoading());
@@ -54,23 +38,6 @@ class StudentCubit extends Cubit<StudentState> {
     }
   }
 
-  Future<void> updateStudent(StudentModel student) async {
-    try {
-      emit(const StudentStateLoading());
-      // Simulate network delay
-      await Future.delayed(const Duration(milliseconds: 500));
-      final index = _students.indexWhere((s) => s.id == student.id);
-      if (index != -1) {
-        _students[index] = student;
-        // emit(StudentStateSuccess(_students));
-      } else {
-        throw Exception('Student not found');
-      }
-    } catch (e) {
-      emit(StudentStateError(e.toString()));
-    }
-  }
-
   Future<void> deleteStudent(String maSV) async {
     try {
       EasyLoading.show();
@@ -78,14 +45,14 @@ class StudentCubit extends Cubit<StudentState> {
       EasyLoading.dismiss();
       data.fold(
         (l) {
-          showToastError(Get.context!, 'Something went wrong, please try again');
+          showToastError(
+              Get.context!, 'Something went wrong, please try again');
         },
         (r) {
           showToastSuccess(Get.context!, 'Delete student successfully');
           getStudents();
         },
       );
-
     } catch (e) {
       EasyLoading.dismiss();
       showToastError(Get.context!, 'Something went wrong, please try again');
@@ -103,14 +70,7 @@ class StudentCubit extends Cubit<StudentState> {
           emit(StudentStateError(l.toString()));
         },
         (r) {
-          emit(StudentStateSuccess(r
-                  ?.map((e) => StudentModelUI(
-                      studentId: e.studentId ?? '',
-                      name: e.name ?? '',
-                      id: e.id ?? '',
-                      className: e.className ?? ''))
-                  .toList() ??
-              []));
+          emit(StudentStateSuccess(r ?? []));
         },
       );
     } catch (e) {

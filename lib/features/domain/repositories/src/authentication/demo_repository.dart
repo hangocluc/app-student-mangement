@@ -14,6 +14,7 @@ abstract class DemoRepository {
 
   Future<bool?> createStudent({required StudentModel student});
 
+  Future<bool?> updateStudents({required StudentModel student});
 
   Future<List<Class>?> getClasses();
 }

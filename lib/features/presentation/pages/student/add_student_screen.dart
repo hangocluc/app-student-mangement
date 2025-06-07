@@ -116,7 +116,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     borderRadius: const BorderRadius.all(AppRadius.radius4),
                   ),
                   child: DropdownButton(
-                    value: controller.student.className,
+                    value: controller.student.classCode,
                     items: controller.classes.value
                         .map((e) => DropdownMenuItem(
                               value: e.maLop,
@@ -124,7 +124,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             ))
                         .toList(),
                     onChanged: (maLop) {
-                      controller.student.className = maLop ?? '';
+                      controller.student.classCode = maLop ?? '';
                       setState(() {});
                     },
                     hint: const Text(
@@ -204,6 +204,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
               onTap: _submitForm,
               padding:
                   const EdgeInsets.symmetric(vertical: AppSpacing.spacing3),
+              titleStyle: AppTypography().bodyMediumSemiBold.copyWith(
+                color: AppColors.white.white,
+              ),
               title: context.l10n.save,
               width: double.infinity,
             ),

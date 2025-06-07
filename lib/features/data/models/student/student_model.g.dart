@@ -7,28 +7,22 @@ part of 'student_model.dart';
 // **************************************************************************
 
 StudentModel _$StudentModelFromJson(Map<String, dynamic> json) => StudentModel(
-      id: json['id'] as String?,
       name: json['hoTen'] as String?,
       studentId: json['maSV'] as String?,
-      className: json['maLop'] as String?,
-      email: json['email'] as String?,
-      phone: json['phone'] as String?,
-      address: json['address'] as String?,
+      className: json['tenLop'] as String?,
       dateOfBirth: json['ngaySinh'] as String?,
-      avatar: json['avatar'] as String?,
-      gender: json['gender'] as String?,
+      gender: json['gioiTinh'] as String?,
+      classCode: json['maLop'] as String?,
+      major: json['tenKhoa'] as String?,
     );
 
 Map<String, dynamic> _$StudentModelToJson(StudentModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'hoTen': instance.name,
       'maSV': instance.studentId,
-      'maLop': instance.className,
-      'email': instance.email,
-      'phone': instance.phone,
-      'address': instance.address,
+      'tenLop': instance.className,
+      'maLop': instance.classCode,
       'ngaySinh': instance.dateOfBirth,
-      'avatar': instance.avatar,
-      'gender': instance.gender,
+      'gioiTinh': instance.gender,
+      'tenKhoa': instance.major,
     };

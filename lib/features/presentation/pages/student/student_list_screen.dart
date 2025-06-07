@@ -1,6 +1,5 @@
 import 'package:base_bloc_cubit/common/widget/app_loading_overlay/app_loading_overlay.dart';
 import 'package:base_bloc_cubit/features/presentation/cubits/student/student_state.dart';
-import 'package:base_bloc_cubit/features/presentation/model/student_model_ui.dart';
 import 'package:base_bloc_cubit/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +31,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
   final cubit = sl.get<StudentCubit>();
 
   //
-  List<StudentModelUI> studentsUI = [];
+  List<StudentModel> studentsUI = [];
 
   @override
   void initState() {
@@ -230,15 +229,16 @@ class _StudentListScreenState extends State<StudentListScreen> {
                                 backgroundColor: AppColors.primary.primary100,
                                 child: AppText(
                                   title: (student.name)
-                                      .substring(0, 1)
-                                      .toUpperCase(),
+                                          ?.substring(0, 1)
+                                          .toUpperCase() ??
+                                      '',
                                   style: AppTypography().heading3.copyWith(
                                         color: AppColors.primary.primary500,
                                       ),
                                 ),
                               ),
                               title: AppText(
-                                title: student.name,
+                                title: student.name ?? '',
                                 style: AppTypography().bodyLargeSemiBold,
                               ),
                               subtitle: Column(
@@ -271,14 +271,17 @@ class _StudentListScreenState extends State<StudentListScreen> {
                                   Icons.more_vert,
                                   color: AppColors.theBlack.theBlack500,
                                 ),
-                                onSelected: (value) {
+                                onSelected: (value) async {
                                   switch (value) {
                                     case 'edit':
-                                      Navigator.pushNamed(
+                                      final result = await Navigator.pushNamed(
                                         context,
                                         RouteName.editStudent,
                                         arguments: student,
                                       );
+                                      if (result == true) {
+                                        cubit.getStudents();
+                                      }
                                       break;
                                     case 'delete':
                                       showDialog(
@@ -306,7 +309,8 @@ class _StudentListScreenState extends State<StudentListScreen> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                _deleteStudent(student.studentId);
+                                                _deleteStudent(
+                                                    student.studentId ?? '');
                                                 Navigator.pop(context);
                                               },
                                               child: AppText(
@@ -371,11 +375,12 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     ),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              final result = await Navigator.pushNamed(
-                  context, RouteName.addStudent);
+              final result =
+                  await Navigator.pushNamed(context, RouteName.addStudent);
               if (result == true) {
                 cubit.getStudents();
-              }            },
+              }
+            },
             backgroundColor: AppColors.primary.primary500,
             child: const Icon(Icons.add, color: Colors.white),
           ),

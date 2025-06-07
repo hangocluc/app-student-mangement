@@ -6,11 +6,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
-class AddStudentController extends GetxController {
+class UpdateStudentController extends GetxController {
   DemoUsecase usecase = GetIt.instance.get<DemoUsecase>();
 
   final classes = RxList<Class>([]);
-  final student = StudentModel();
+  StudentModel student = StudentModel();
 
   @override
   void onInit() {
@@ -27,17 +27,17 @@ class AddStudentController extends GetxController {
     });
   }
 
-  Future<void> createStudent() async {
+  Future<void> updateStudents() async {
     try {
       EasyLoading.show();
-      final result = await usecase.createStudents(student);
+      final result = await usecase.updateStudents(student);
       EasyLoading.dismiss();
       result.fold((a) {
         showError();
       }, (data) {
         if (data == true) {
           Get.back(result: true);
-          showToastSuccess(Get.context!, 'Thêm thành công');
+          showToastSuccess(Get.context!, 'Update successfully');
         } else {
           showError();
         }

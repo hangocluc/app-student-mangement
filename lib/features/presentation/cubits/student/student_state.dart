@@ -1,4 +1,3 @@
-import 'package:base_bloc_cubit/features/presentation/model/student_model_ui.dart';
 import 'package:equatable/equatable.dart';
 import '../../../data/models/student/student_model.dart';
 
@@ -18,7 +17,7 @@ class StudentStateLoading extends StudentState {
 }
 
 class StudentStateSuccess extends StudentState {
-  final List<StudentModelUI> students;
+  final List<StudentModel> students;
 
   const StudentStateSuccess(this.students);
 
