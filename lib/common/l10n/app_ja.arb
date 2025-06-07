@@ -1,0 +1,85 @@
+{
+  "@@locale": "ja",
+  "appTitle": "学生管理",
+  "lblTheme": "テーマの変更",
+  "appName": "学生管理",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "welcomeBack": "おかえりなさい！",
+  "@welcomeBack": {
+    "description": "Welcome back message on login screen"
+  },
+  "pleaseSignIn": "サインインして続行してください",
+  "@pleaseSignIn": {
+    "description": "Sign in message on login screen"
+  },
+  "email": "メールアドレス",
+  "@email": {
+    "description": "Email label"
+  },
+  "enterEmail": "メールアドレスを入力してください",
+  "@enterEmail": {
+    "description": "Email hint text"
+  },
+  "password": "パスワード",
+  "@password": {
+    "description": "Password label"
+  },
+  "enterPassword": "パスワードを入力してください",
+  "@enterPassword": {
+    "description": "Password hint text"
+  },
+  "signIn": "サインイン",
+  "@signIn": {
+    "description": "Sign in button text"
+  },
+  "forgotPassword": "パスワードをお忘れですか？",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  "loginSuccess": "ログインに成功しました",
+  "@loginSuccess": {
+    "description": "Login success message"
+  },
+  "pleaseEnterEmail": "メールアドレスを入力してください",
+  "@pleaseEnterEmail": {
+    "description": "Email validation message"
+  },
+  "pleaseEnterValidEmail": "有効なメールアドレスを入力してください",
+  "@pleaseEnterValidEmail": {
+    "description": "Email format validation message"
+  },
+  "pleaseEnterPassword": "パスワードを入力してください",
+  "@pleaseEnterPassword": {
+    "description": "Password validation message"
+  },
+  "passwordMinLength": "パスワードは6文字以上である必要があります",
+  "@passwordMinLength": {
+    "description": "Password length validation message"
+  },
+  "studentList": "生徒一覧",
+  "noStudentsFound": "生徒が見つかりません",
+  "addNewStudent": "新しい生徒を追加",
+  "studentId": "学籍番号",
+  "className": "クラス",
+  "deleteStudent": "生徒を削除",
+  "deleteStudentConfirm": "この生徒を削除してもよろしいですか？",
+  "cancel": "キャンセル",
+  "delete": "削除",
+  "edit": "編集",
+  "name": "名前",
+  "enterName": "生徒の名前を入力してください",
+  "pleaseEnterName": "生徒の名前を入力してください",
+  "enterStudentId": "学籍番号を入力してください",
+  "pleaseEnterStudentId": "学籍番号を入力してください",
+  "enterClassName": "クラス名を入力してください",
+  "pleaseEnterClassName": "クラス名を入力してください",
+  "phone": "電話番号",
+  "enterPhone": "電話番号を入力してください",
+  "pleaseEnterValidPhone": "有効な電話番号を入力してください",
+  "address": "住所",
+  "enterAddress": "住所を入力してください",
+  "selectDateOfBirth": "生年月日を選択してください",
+  "save": "保存"
+} 

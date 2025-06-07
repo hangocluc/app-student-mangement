@@ -1,0 +1,85 @@
+{
+  "@@locale": "en",
+  "appTitle": "Student Management",
+  "lblTheme": "Change Theme",
+  "appName": "Student Management",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "welcomeBack": "Welcome Back!",
+  "@welcomeBack": {
+    "description": "Welcome back message on login screen"
+  },
+  "pleaseSignIn": "Please sign in to continue",
+  "@pleaseSignIn": {
+    "description": "Sign in message on login screen"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email label"
+  },
+  "enterEmail": "Enter your email",
+  "@enterEmail": {
+    "description": "Email hint text"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password label"
+  },
+  "enterPassword": "Enter your password",
+  "@enterPassword": {
+    "description": "Password hint text"
+  },
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign in button text"
+  },
+  "forgotPassword": "Forgot Password?",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  "loginSuccess": "Login successful",
+  "@loginSuccess": {
+    "description": "Login success message"
+  },
+  "pleaseEnterEmail": "Please enter your email",
+  "@pleaseEnterEmail": {
+    "description": "Email validation message"
+  },
+  "pleaseEnterValidEmail": "Please enter a valid email",
+  "@pleaseEnterValidEmail": {
+    "description": "Email format validation message"
+  },
+  "pleaseEnterPassword": "Please enter your password",
+  "@pleaseEnterPassword": {
+    "description": "Password validation message"
+  },
+  "passwordMinLength": "Password must be at least 6 characters",
+  "@passwordMinLength": {
+    "description": "Password length validation message"
+  },
+  "studentList": "Student List",
+  "noStudentsFound": "No students found",
+  "addNewStudent": "Add New Student",
+  "studentId": "Student ID",
+  "className": "Class",
+  "deleteStudent": "Delete Student",
+  "deleteStudentConfirm": "Are you sure you want to delete this student?",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "edit": "Edit",
+  "name": "Name",
+  "enterName": "Enter student name",
+  "pleaseEnterName": "Please enter student name",
+  "enterStudentId": "Enter student ID",
+  "pleaseEnterStudentId": "Please enter student ID",
+  "enterClassName": "Enter class name",
+  "pleaseEnterClassName": "Please enter class name",
+  "phone": "Phone",
+  "enterPhone": "Enter phone number",
+  "pleaseEnterValidPhone": "Please enter a valid phone number",
+  "address": "Address",
+  "enterAddress": "Enter address",
+  "selectDateOfBirth": "Select date of birth",
+  "save": "Save"
+} 

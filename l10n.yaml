@@ -1,0 +1,9 @@
+enabled: true
+arb-dir: lib/common/l10n
+output-dir: lib/common/l10n/generate
+template-arb-file: app_ja.arb
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+nullable-getter: false
+use-escaping: true
+synthetic-package: false
