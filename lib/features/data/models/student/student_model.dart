@@ -4,19 +4,20 @@ part 'student_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class StudentModel {
-  final String? id;
+  String? id;
   @JsonKey(name: 'hoTen')
-  final String? name;
+  String? name;
   @JsonKey(name: 'maSV')
-  final String? studentId;
+  String? studentId;
   @JsonKey(name: 'maLop')
-  final String? className;
-  final String? email;
-  final String? phone;
-  final String? address;
+  String? className;
+  String? email;
+  String? phone;
+  String? address;
   @JsonKey(name: 'ngaySinh')
-  final String? dateOfBirth;
-  final String? avatar;
+  String? dateOfBirth;
+  String? avatar;
+  String? gender;
 
   StudentModel({
     this.id,
@@ -28,6 +29,7 @@ class StudentModel {
     this.address,
     this.dateOfBirth,
     this.avatar,
+    this.gender,
   });
 
   factory StudentModel.fromJson(Map<String, dynamic> json) =>

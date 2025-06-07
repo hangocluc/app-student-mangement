@@ -29,12 +29,12 @@ final bodyIndexHeightScrollModel =
 final bodyIndexWeightScrollModel =
     CommonScrollModel(minValue: 0, maxValue: 10, unit: 'kg');
 final yearScrollModel =
-    CommonScrollModel(minValue: 1900, maxValue: DateTime.now().year, unit: '年');
+    CommonScrollModel(minValue: 1900, maxValue: DateTime.now().year, unit: '');
 final yearLimitScrollModel =
-    CommonScrollModel(minValue: 1900, maxValue: DateTime.now().year, unit: '年');
+    CommonScrollModel(minValue: 1900, maxValue: DateTime.now().year, unit: '');
 final monthScrollModel =
-    CommonScrollModel(minValue: 1, maxValue: 12, unit: '月');
-final dayScrollModel = CommonScrollModel(minValue: 1, maxValue: 31, unit: '日');
+    CommonScrollModel(minValue: 1, maxValue: 12, unit: '');
+final dayScrollModel = CommonScrollModel(minValue: 1, maxValue: 31, unit: '');
 // For height
 final heightCommonScrollModel =
     CommonScrollModel(minValue: 50, maxValue: 250, unit: '');

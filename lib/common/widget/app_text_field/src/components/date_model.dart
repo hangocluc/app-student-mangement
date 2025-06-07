@@ -18,7 +18,7 @@ class DateModel {
 
   String toStringDate() {
     if (year != null) {
-      return '$year年$month月$day日';
+      return '$year/$month/$day';
     } else {
       return '';
     }

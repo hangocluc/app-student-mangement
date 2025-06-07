@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../common/l10n/generate/app_localizations.dart';
 import '../common/widget/app_overlay/overlay_widget.dart';
@@ -50,7 +51,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           providers: _appBlocProviders(),
           child: BlocBuilder<DemoCubit, DemoState>(
             builder: (context, state) {
-              return MaterialApp(
+              return GetMaterialApp(
                 builder: (context, child) {
                   child = OverlayWidget.init()(context, child);
                   child = EasyLoading.init()(context, child);
@@ -72,9 +73,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 onGenerateRoute: GenerateRoute.generateRoute,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
-                locale: (state is LanguageStateSuccess)
-                    ? state.locale
-                    : const Locale('en'),
+                locale: const Locale('en'),
               );
             },
           ),

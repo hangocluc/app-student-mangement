@@ -6,16 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../common/generate/assets.gen.dart';
 import '../../../../common/theme/app_color.dart';
 import '../../../../common/theme/app_spacing.dart';
 import '../../../../common/theme/app_typography.dart';
 import '../../../../common/widget/app_button/app_button.dart';
 import '../../../../common/widget/app_text/app_text.dart';
-import '../../../../common/widget/app_text_field/src/custom_text_field.dart';
 import '../../../../core/extension/src/context_extension.dart';
 import '../../../app/routes/src/routes_name.dart';
-import '../../../data/datasources/local/fake_student_data.dart';
 import '../../../data/models/student/student_model.dart';
 import '../../cubits/student/student_cubit.dart';
 
@@ -33,33 +30,22 @@ class _StudentListScreenState extends State<StudentListScreen> {
   bool _isSearching = false;
   final _searchController = TextEditingController();
   final cubit = sl.get<StudentCubit>();
+
   //
   List<StudentModelUI> studentsUI = [];
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       cubit.getStudents();
     });
-
-    _loadStudents();
   }
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
-  }
-
-  Future<void> _loadStudents() async {
-    setState(() => _isLoading = true);
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 500));
-    setState(() {
-      _allStudents = List.from(fakeStudents);
-      _filteredStudents = _allStudents;
-      _isLoading = false;
-    });
   }
 
   void _filterStudents(String? query) {
@@ -216,9 +202,12 @@ class _StudentListScreenState extends State<StudentListScreen> {
                           SizedBox(height: 24.h),
                           if (!_isSearching)
                             AppButton(
-                              onTap: () {
-                                Navigator.pushNamed(
+                              onTap: () async {
+                                final result = await Navigator.pushNamed(
                                     context, RouteName.addStudent);
+                                if (result == true) {
+                                  cubit.getStudents();
+                                }
                               },
                               title: context.l10n.addNewStudent,
                               width: 200.w,
@@ -227,7 +216,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                       ),
                     )
                   : RefreshIndicator(
-                      onRefresh: _loadStudents,
+                      onRefresh: cubit.getStudents,
                       child: ListView.builder(
                         padding: EdgeInsets.all(AppSpacing.spacing4.w),
                         itemCount: studentsUI.length,
@@ -388,9 +377,12 @@ class _StudentListScreenState extends State<StudentListScreen> {
                       ),
                     ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.pushNamed(context, RouteName.addStudent);
-            },
+            onPressed: () async {
+              final result = await Navigator.pushNamed(
+                  context, RouteName.addStudent);
+              if (result == true) {
+                cubit.getStudents();
+              }            },
             backgroundColor: AppColors.primary.primary500,
             child: const Icon(Icons.add, color: Colors.white),
           ),

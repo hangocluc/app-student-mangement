@@ -1,7 +1,6 @@
 import 'package:base_bloc_cubit/features/domain/usecases/src/demo_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/datasources/local/fake_student_data.dart';
 import '../../../data/models/student/student_model.dart';
 import '../../model/student_model_ui.dart';
 import 'student_state.dart';
@@ -11,7 +10,7 @@ class StudentCubit extends Cubit<StudentState> {
   List<StudentModel> _students = [];
 
   StudentCubit({required this.usecase}) : super(const StudentStateInitial()) {
-    _students = List.from(fakeStudents);
+    _students = List.from([]);
   }
 
   Future<void> loadStudents() async {

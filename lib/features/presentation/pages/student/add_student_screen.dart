@@ -1,17 +1,19 @@
+import 'package:base_bloc_cubit/common/theme/app_color.dart';
+import 'package:base_bloc_cubit/common/widget/app_toast/app_toast.dart';
+import 'package:base_bloc_cubit/features/presentation/cubits/student/add_student_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
-import '../../../../../common/theme/app_color.dart';
 import '../../../../../common/theme/app_spacing.dart';
 import '../../../../../common/theme/app_typography.dart';
 import '../../../../../common/widget/app_button/app_button.dart';
 import '../../../../../common/widget/app_text/app_text.dart';
-import '../../../../../common/widget/app_text_field/src/custom_text_field.dart';
-import '../../../../../common/widget/app_text_field/src/custom_date_scroll_selection.dart';
 import '../../../../../common/widget/app_text_field/src/components/date_model.dart';
+import '../../../../../common/widget/app_text_field/src/custom_date_scroll_selection.dart';
+import '../../../../../common/widget/app_text_field/src/custom_text_field.dart';
 import '../../../../../core/extension/src/context_extension.dart';
-import '../../../data/models/student/student_model.dart';
+import '../../../../common/theme/app_radius.dart';
 
 class AddStudentScreen extends StatefulWidget {
   const AddStudentScreen({super.key});
@@ -23,21 +25,27 @@ class AddStudentScreen extends StatefulWidget {
 class _AddStudentScreenState extends State<AddStudentScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _studentIdController = TextEditingController();
   final _classNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
   DateTime? _selectedDate;
+  late AddStudentController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(AddStudentController());
+  }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _studentIdController.dispose();
     _classNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
+    Get.delete<AddStudentController>();
     super.dispose();
   }
 
@@ -56,21 +64,10 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   }
 
   void _submitForm() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // Create new student
-      final newStudent = StudentModel(
-        id: DateTime.now().millisecondsSinceEpoch.toString(), // Temporary ID
-        name: _nameController.text,
-        studentId: _studentIdController.text,
-        className: _classNameController.text,
-        email: _emailController.text,
-        phone: _phoneController.text,
-        address: _addressController.text,
-        dateOfBirth: _selectedDate.toString(),
-      );
-
-      // Return the new student to the previous screen
-      Navigator.pop(context, newStudent);
+    if (controller.enoughField()) {
+      controller.createStudent();
+    } else {
+      showToastError(context, 'Please enter require field');
     }
   }
 
@@ -90,9 +87,11 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
           children: [
             AppCustomTextField(
               controller: _nameController,
-              title: context.l10n.name,
+              title: '${context.l10n.name} *',
               hintText: context.l10n.enterName,
-              isRequired: true,
+              onChange: (value) {
+                controller.student.name = value?.trim() ?? '';
+              },
               validator: (value) {
                 if (value?.isEmpty ?? true) {
                   return context.l10n.pleaseEnterName;
@@ -101,80 +100,95 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
               },
             ),
             SizedBox(height: AppSpacing.spacing4.h),
-            AppCustomTextField(
-              controller: _studentIdController,
-              title: context.l10n.studentId,
-              hintText: context.l10n.enterStudentId,
-              isRequired: true,
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return context.l10n.pleaseEnterStudentId;
-                }
-                return null;
-              },
+            Text(
+              'Class *',
+              style: AppTypography().bodySmallRegular.copyWith(
+                    color: AppColors.theBlack.theBlack900,
+                  ),
             ),
+            const SizedBox(height: 4),
+            Obx(() => Container(
+                  height: 48,
+                  width: MediaQuery.sizeOf(context).width,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: AppColors.theBlack.theBlack200),
+                    borderRadius: const BorderRadius.all(AppRadius.radius4),
+                  ),
+                  child: DropdownButton(
+                    value: controller.student.className,
+                    items: controller.classes.value
+                        .map((e) => DropdownMenuItem(
+                              value: e.maLop,
+                              child: Text(e.tenLop ?? ''),
+                            ))
+                        .toList(),
+                    onChanged: (maLop) {
+                      controller.student.className = maLop ?? '';
+                      setState(() {});
+                    },
+                    hint: const Text(
+                      'Select class',
+                      style: TextStyle(
+                          color: Colors.grey, fontWeight: FontWeight.w400),
+                    ),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w400, color: Colors.black),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    isExpanded: true,
+                    underline: const SizedBox(),
+                  ),
+                )),
             SizedBox(height: AppSpacing.spacing4.h),
-            AppCustomTextField(
-              controller: _classNameController,
-              title: context.l10n.className,
-              hintText: context.l10n.enterClassName,
-              isRequired: true,
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return context.l10n.pleaseEnterClassName;
-                }
-                return null;
-              },
+            Text(
+              'Gender *',
+              style: AppTypography().bodySmallRegular.copyWith(
+                    color: AppColors.theBlack.theBlack900,
+                  ),
             ),
-            SizedBox(height: AppSpacing.spacing4.h),
-            AppCustomTextField(
-              controller: _emailController,
-              title: context.l10n.email,
-              hintText: context.l10n.enterEmail,
-              textInputType: TextInputType.emailAddress,
-              validator: (value) {
-                if (value?.isNotEmpty ?? false) {
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                      .hasMatch(value!)) {
-                    return context.l10n.pleaseEnterValidEmail;
-                  }
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: AppSpacing.spacing4.h),
-            AppCustomTextField(
-              controller: _phoneController,
-              title: context.l10n.phone,
-              hintText: context.l10n.enterPhone,
-              textInputType: TextInputType.phone,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              validator: (value) {
-                if (value?.isNotEmpty ?? false) {
-                  if (value!.length < 10) {
-                    return context.l10n.pleaseEnterValidPhone;
-                  }
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: AppSpacing.spacing4.h),
-            AppCustomTextField(
-              controller: _addressController,
-              title: context.l10n.address,
-              hintText: context.l10n.enterAddress,
-              maxLine: 3,
+            const SizedBox(height: 4),
+            Container(
+              height: 48,
+              width: MediaQuery.sizeOf(context).width,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: AppColors.theBlack.theBlack200),
+                borderRadius: const BorderRadius.all(AppRadius.radius4),
+              ),
+              child: DropdownButton(
+                value: controller.student.gender,
+                items: ['Nam', 'Nữ']
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        ))
+                    .toList(),
+                onChanged: (gender) {
+                  controller.student.gender = gender ?? '';
+                  setState(() {});
+                },
+                hint: const Text(
+                  'Select gender',
+                  style: TextStyle(
+                      color: Colors.grey, fontWeight: FontWeight.w400),
+                ),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w400, color: Colors.black),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                isExpanded: true,
+                underline: const SizedBox(),
+              ),
             ),
             SizedBox(height: AppSpacing.spacing4.h),
             CustomDateScrollSelection(
-              title: context.l10n.selectDateOfBirth,
+              title: '${context.l10n.selectDateOfBirth} *',
               titleBottomSheet: context.l10n.selectDateOfBirth,
               onChange: (date) {
                 setState(() {
                   _selectedDate = DateTime(date.year, date.month, date.day);
                 });
+                controller.student.dateOfBirth =
+                    _selectedDate?.toIso8601String() ?? '';
               },
               selectedValue: _selectedDate != null
                   ? DateModel(
@@ -183,7 +197,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       day: _selectedDate!.day,
                     )
                   : null,
-              isRequired: true,
               hintText: context.l10n.selectDateOfBirth,
             ),
             SizedBox(height: AppSpacing.spacing8.h),

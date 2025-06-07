@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             //         password: _passwordController.text,
                             //       );
                             // }
-                            Navigator.pushNamed(context, RouteName.home);
+                            Navigator.pushReplacementNamed(context, RouteName.home);
                           },
                           title: context.l10n.signIn,
                           height: 48.h,

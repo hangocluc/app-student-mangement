@@ -1,4 +1,5 @@
 // ignore: depend_on_referenced_packages
+import 'package:base_bloc_cubit/features/data/models/class.dart';
 import 'package:base_bloc_cubit/features/data/models/models.dart';
 import 'package:base_bloc_cubit/features/data/models/student/student_model.dart';
 import 'package:dio/dio.dart';
@@ -17,32 +18,20 @@ abstract class DemoService {
   @GET(DemoApiPath.demo)
   Future<ApiResponse<DemoModel>> demo();
 
-  @GET(DemoApiPath.getStudent)
+  @GET(DemoApiPath.studentRoute)
   Future<ApiResponse<List<StudentModel>>> getStudents();
 
   @DELETE(DemoApiPath.deleteStudent)
   Future<ApiResponse> deleteStudent(@Path("maSV") String maSV);
 
-  // @GET(DemoApiPath.notificationPath)
-  // Future<ApiResponse<NotificationModel>> listNotification(
-  //   @Query('genreId') String genreId,
-  //   @Query('per_page') int perPage,
-  //   @Query('page') int page,
-  // );
+  @POST(DemoApiPath.studentRoute)
+  Future<ApiResponse> createStudent(
+    @Field("hoTen") String hoTen,
+    @Field("ngaySinh") String ngaySinh,
+    @Field("gioiTinh") String gioiTinh,
+    @Field("maLop") String maLop,
+  );
 
-  // @GET(NotificationApiPath.detailNotificationPath)
-  // Future<ApiResponse<Notification>> detailNotification(
-  //     @Path('articleId') String id);
-
-  // @POST(NotificationApiPath.readNotificationPath)
-  // Future<ApiResponse> readNotification(@Path('articleId') String id);
-
-  // @POST(NotificationApiPath.getPointNotificationPath)
-  // Future<ApiResponse> getPointNotification(@Path('articleId') String id);
-
-  // @GET(NoticeApiPath.notices)
-  // Future<ApiResponse> getNotices();
-
-  // @POST(NoticeApiPath.noticeShowOff)
-  // Future<ApiResponse> noticeShowOff(@Path('noticeId') String noticeId);
+  @GET(DemoApiPath.classRoute)
+  Future<ApiResponse<List<Class>>> getClasses();
 }
