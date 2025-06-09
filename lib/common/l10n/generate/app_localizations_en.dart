@@ -16,7 +16,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Student Management';
 
   @override
-  String get welcomeBack => 'Welcome Back!';
+  String get welcomeBack => 'Welcome Back';
 
   @override
   String get pleaseSignIn => 'Please sign in to continue';
@@ -32,6 +32,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterPassword => 'Enter your password';
+
+  @override
+  String get userName => 'Username';
+
+  @override
+  String get enterUserName => 'Enter your username';
+
+  @override
+  String get pleaseEnterUserName => 'Please enter your username';
+
+  @override
+  String get pleaseEnterValidUserName => 'Please enter a valid UserName';
 
   @override
   String get signIn => 'Sign In';
@@ -67,7 +79,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get studentId => 'Student ID';
 
   @override
-  String get className => 'Class';
+  String get className => 'Class Name';
 
   @override
   String get deleteStudent => 'Delete Student';

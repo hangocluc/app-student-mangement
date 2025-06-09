@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:base_bloc_cubit/common/widget/app_loading_overlay/app_loading_overlay.dart';
 import 'package:base_bloc_cubit/features/presentation/cubits/student/student_state.dart';
 import 'package:base_bloc_cubit/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../../common/theme/app_color.dart';
 import '../../../../common/theme/app_spacing.dart';
@@ -12,8 +15,11 @@ import '../../../../common/widget/app_button/app_button.dart';
 import '../../../../common/widget/app_text/app_text.dart';
 import '../../../../core/extension/src/context_extension.dart';
 import '../../../app/routes/src/routes_name.dart';
-import '../../../data/models/student/student_model.dart';
 import '../../cubits/student/student_cubit.dart';
+import '../../cubits/student/student_state.dart';
+import '../../../data/models/student/student_model.dart';
+import '../../cubits/login/login_cubit.dart';
+import '../auth/login/login_screen.dart';
 
 class StudentListScreen extends StatefulWidget {
   const StudentListScreen({super.key});
@@ -23,9 +29,7 @@ class StudentListScreen extends StatefulWidget {
 }
 
 class _StudentListScreenState extends State<StudentListScreen> {
-  List<StudentModel> _allStudents = [];
-  List<StudentModel> _filteredStudents = [];
-  bool _isLoading = false;
+  final bool _isLoading = false;
   bool _isSearching = false;
   final _searchController = TextEditingController();
   final cubit = sl.get<StudentCubit>();
@@ -47,13 +51,13 @@ class _StudentListScreenState extends State<StudentListScreen> {
     super.dispose();
   }
 
-  void _filterStudents(String? query) {
-    if (query == null) return;
-    setState(() {
-      _filteredStudents = _allStudents
-          .where((student) =>
-              (student.name ?? '').toLowerCase().contains(query.toLowerCase()))
-          .toList();
+  Timer? _debounce;
+  final _debounceDuration = const Duration(milliseconds: 500);
+
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(_debounceDuration, () {
+      cubit.getStudents(maSV: query);
     });
   }
 
@@ -71,7 +75,6 @@ class _StudentListScreenState extends State<StudentListScreen> {
         setState(() {});
       case DeleteStudentStateSuccess():
         dismissLoadingOverlay(context);
-
         setState(() {});
     }
   }
@@ -82,97 +85,163 @@ class _StudentListScreenState extends State<StudentListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<StudentCubit>(
-      create: (context) => cubit,
-      child: BlocListener<StudentCubit, StudentState>(
-        listener: (context, state) {
-          _listenCubit(context, state);
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            title: _isSearching
-                ? Container(
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      color: AppColors.theBlack.theBlack100,
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search student name...',
-                        hintStyle: AppTypography().bodyMediumRegular.copyWith(
-                              color: AppColors.theBlack.theBlack400,
-                            ),
-                        prefixIcon: Icon(
-                          Icons.search,
+    return Scaffold(
+      appBar: AppBar(
+        title: _isSearching
+            ? Container(
+                height: 40.h,
+                decoration: BoxDecoration(
+                  color: AppColors.theBlack.theBlack100,
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Search student name...',
+                    hintStyle: AppTypography().bodyMediumRegular.copyWith(
                           color: AppColors.theBlack.theBlack400,
-                          size: 20.w,
                         ),
-                        suffixIcon: _searchController.text.isNotEmpty
-                            ? IconButton(
-                                icon: Icon(
-                                  Icons.clear,
-                                  color: AppColors.theBlack.theBlack400,
-                                  size: 20.w,
-                                ),
-                                onPressed: () {
-                                  _searchController.clear();
-                                  _filterStudents('');
-                                },
-                              )
-                            : null,
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 8.h,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: AppColors.theBlack.theBlack400,
+                      size: 20.w,
+                    ),
+                    suffixIcon: _searchController.text.isNotEmpty
+                        ? IconButton(
+                            icon: Icon(
+                              Icons.clear,
+                              color: AppColors.theBlack.theBlack400,
+                              size: 20.w,
+                            ),
+                            onPressed: () {
+                              _searchController.clear();
+                              _onSearchChanged('');
+                            },
+                          )
+                        : null,
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 8.h,
+                    ),
+                  ),
+                  style: AppTypography().bodyMediumRegular,
+                  onChanged: _onSearchChanged,
+                  onSubmitted: (_) {
+                    setState(() => _isSearching = false);
+                  },
+                ),
+              )
+            : AppText(
+                title: context.l10n.studentList,
+                style: AppTypography().heading5,
+              ),
+        actions: [
+          if (!_isSearching)
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _isSearching = true;
+                  _searchController.clear();
+                });
+              },
+              icon: Icon(
+                Icons.search,
+                color: AppColors.primary.primary500,
+              ),
+            ),
+          if (_isSearching)
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _isSearching = false;
+                  _searchController.clear();
+                });
+              },
+              child: AppText(
+                title: 'Cancel',
+                style: AppTypography().bodyMediumMedium.copyWith(
+                      color: AppColors.primary.primary500,
+                    ),
+              ),
+            ),
+          PopupMenuButton<String>(
+            icon: Icon(
+              Icons.more_vert,
+              color: AppColors.theBlack.theBlack500,
+            ),
+            onSelected: (value) {
+              if (value == 'logout') {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: AppText(
+                      title: 'Logout',
+                      style: AppTypography().heading5,
+                    ),
+                    content: AppText(
+                      title: 'Are you sure you want to logout?',
+                      style: AppTypography().bodyMediumRegular,
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: AppText(
+                          title: 'Cancel',
+                          style: AppTypography().bodyMediumRegular.copyWith(
+                                color: AppColors.primary.primary500,
+                              ),
                         ),
                       ),
-                      style: AppTypography().bodyMediumRegular,
-                      onChanged: _filterStudents,
-                      onSubmitted: (_) {
-                        setState(() => _isSearching = false);
-                      },
-                    ),
-                  )
-                : AppText(
-                    title: context.l10n.studentList,
-                    style: AppTypography().heading5,
-                  ),
-            actions: [
-              if (!_isSearching)
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = true;
-                      _searchController.clear();
-                      _filteredStudents = _allStudents;
-                    });
-                  },
-                  icon: Icon(
-                    Icons.search,
-                    color: AppColors.primary.primary500,
-                  ),
-                ),
-              if (_isSearching)
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = false;
-                      _searchController.clear();
-                      _filteredStudents = _allStudents;
-                    });
-                  },
-                  child: AppText(
-                    title: 'Cancel',
-                    style: AppTypography().bodyMediumMedium.copyWith(
-                          color: AppColors.primary.primary500,
+                      TextButton(
+                        onPressed: () {
+                          // Close the cubit before navigation
+                          // Create a new LoginCubit instance
+                          // Navigate to login screen with new cubit
+                          Navigator.pushReplacementNamed(
+                              context, RouteName.root);
+                        },
+                        child: AppText(
+                          title: 'Logout',
+                          style: AppTypography().bodyMediumRegular.copyWith(
+                                color: AppColors.red.red500,
+                              ),
                         ),
+                      ),
+                    ],
                   ),
+                );
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'logout',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.logout,
+                      size: 20.w,
+                      color: AppColors.red.red500,
+                    ),
+                    SizedBox(width: 8.w),
+                    AppText(
+                      title: 'Logout',
+                      style: AppTypography().bodyMediumRegular,
+                    ),
+                  ],
                 ),
+              ),
             ],
           ),
-          body: _isLoading
+        ],
+      ),
+      body: BlocProvider(
+        create: (context) => cubit,
+        child: BlocListener<StudentCubit, StudentState>(
+          listener: (context, state) {
+            _listenCubit(context, state);
+          },
+          child: _isLoading
               ? const Center(child: CircularProgressIndicator())
               : studentsUI.isEmpty
                   ? Center(
@@ -373,18 +442,18 @@ class _StudentListScreenState extends State<StudentListScreen> {
                         },
                       ),
                     ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              final result =
-                  await Navigator.pushNamed(context, RouteName.addStudent);
-              if (result == true) {
-                cubit.getStudents();
-              }
-            },
-            backgroundColor: AppColors.primary.primary500,
-            child: const Icon(Icons.add, color: Colors.white),
-          ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result =
+              await Navigator.pushNamed(context, RouteName.addStudent);
+          if (result == true) {
+            cubit.getStudents();
+          }
+        },
+        backgroundColor: AppColors.primary.primary500,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

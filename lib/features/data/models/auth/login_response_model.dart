@@ -4,12 +4,12 @@ part 'login_response_model.g.dart';
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class LoginResponseModel {
-  final String? name;
-  final String? accessToken;
+  final String? username;
+  final String? role;
   final String? refreshToken;
   LoginResponseModel({
-    this.name,
-    this.accessToken,
+    this.username,
+    this.role,
     this.refreshToken,
   });
 

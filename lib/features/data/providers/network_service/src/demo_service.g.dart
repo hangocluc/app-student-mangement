@@ -49,9 +49,10 @@ class _DemoService implements DemoService {
   }
 
   @override
-  Future<ApiResponse<List<StudentModel>>> getStudents() async {
+  Future<ApiResponse<List<StudentModel>>> getStudents(String? maSV) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'maSV': maSV};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(

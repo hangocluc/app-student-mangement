@@ -60,11 +60,11 @@ class StudentCubit extends Cubit<StudentState> {
     }
   }
 
-  Future<void> getStudents() async {
+  Future<void> getStudents({String? maSV}) async {
     try {
       emit(const StudentStateLoading());
-      // Simulate network delay
-      final data = await usecase.getStudents();
+
+      final data = await usecase.getStudents(maSV);
       data.fold(
         (l) {
           emit(StudentStateError(l.toString()));

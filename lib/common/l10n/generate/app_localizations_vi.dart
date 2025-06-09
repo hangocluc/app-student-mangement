@@ -2,9 +2,9 @@ import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for Japanese (`ja`).
-class AppLocalizationsJa extends AppLocalizations {
-  AppLocalizationsJa([String locale = 'ja']) : super(locale);
+/// The translations for Vietnamese (`vi`).
+class AppLocalizationsVi extends AppLocalizations {
+  AppLocalizationsVi([String locale = 'vi']) : super(locale);
 
   @override
   String get appTitle => '学生管理';
@@ -16,10 +16,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get appName => '学生管理';
 
   @override
-  String get welcomeBack => 'おかえりなさい！';
+  String get welcomeBack => 'Chào mừng trở lại';
 
   @override
-  String get pleaseSignIn => 'サインインして続行してください';
+  String get pleaseSignIn => 'Vui lòng đăng nhập để tiếp tục';
 
   @override
   String get email => 'メールアドレス';
@@ -28,31 +28,31 @@ class AppLocalizationsJa extends AppLocalizations {
   String get enterEmail => 'メールアドレスを入力してください';
 
   @override
-  String get password => 'パスワード';
+  String get password => 'Mật khẩu';
 
   @override
-  String get enterPassword => 'パスワードを入力してください';
+  String get enterPassword => 'Nhập mật khẩu';
 
   @override
-  String get userName => 'UserName';
+  String get userName => 'Tên đăng nhập';
 
   @override
-  String get enterUserName => 'Enter your UserName';
+  String get enterUserName => 'Nhập tên đăng nhập';
 
   @override
-  String get pleaseEnterUserName => 'Please enter your UserName';
+  String get pleaseEnterUserName => 'Vui lòng nhập tên đăng nhập';
 
   @override
   String get pleaseEnterValidUserName => 'Please enter a valid UserName';
 
   @override
-  String get signIn => 'サインイン';
+  String get signIn => 'Đăng nhập';
 
   @override
-  String get forgotPassword => 'パスワードをお忘れですか？';
+  String get forgotPassword => 'Quên mật khẩu?';
 
   @override
-  String get loginSuccess => 'ログインに成功しました';
+  String get loginSuccess => 'Đăng nhập thành công';
 
   @override
   String get pleaseEnterEmail => 'メールアドレスを入力してください';
@@ -61,40 +61,40 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pleaseEnterValidEmail => '有効なメールアドレスを入力してください';
 
   @override
-  String get pleaseEnterPassword => 'パスワードを入力してください';
+  String get pleaseEnterPassword => 'Vui lòng nhập mật khẩu';
 
   @override
-  String get passwordMinLength => 'パスワードは6文字以上である必要があります';
+  String get passwordMinLength => 'Mật khẩu phải có ít nhất 6 ký tự';
 
   @override
-  String get studentList => '生徒一覧';
+  String get studentList => 'Danh sách sinh viên';
 
   @override
-  String get noStudentsFound => '生徒が見つかりません';
+  String get noStudentsFound => 'Không tìm thấy sinh viên nào';
 
   @override
-  String get addNewStudent => '新しい生徒を追加';
+  String get addNewStudent => 'Thêm sinh viên mới';
 
   @override
-  String get studentId => '学籍番号';
+  String get studentId => 'Mã sinh viên';
 
   @override
-  String get className => 'クラス';
+  String get className => 'Lớp';
 
   @override
-  String get deleteStudent => '生徒を削除';
+  String get deleteStudent => 'Xóa sinh viên';
 
   @override
-  String get deleteStudentConfirm => 'この生徒を削除してもよろしいですか？';
+  String get deleteStudentConfirm => 'Bạn có chắc chắn muốn xóa sinh viên này?';
 
   @override
-  String get cancel => 'キャンセル';
+  String get cancel => 'Hủy';
 
   @override
-  String get delete => '削除';
+  String get delete => 'Xóa';
 
   @override
-  String get edit => '編集';
+  String get edit => 'Sửa';
 
   @override
   String get name => '名前';

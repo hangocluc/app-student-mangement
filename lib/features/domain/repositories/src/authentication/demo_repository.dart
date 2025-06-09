@@ -8,7 +8,7 @@ abstract class DemoRepository {
     String? username,
   });
 
-  Future<List<StudentModel>?> getStudents();
+  Future<List<StudentModel>?> getStudents({String? maSV});
 
   Future<bool?> deleteStudent({required String maSV});
 

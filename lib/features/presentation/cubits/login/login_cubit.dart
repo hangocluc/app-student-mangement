@@ -1,42 +1,39 @@
+import 'package:base_bloc_cubit/core/base/src/api_response.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
-import '../../../../core/interceptor/api_header.dart';
+import '../../../../core/extension/src/string_extension.dart';
+
 import '../../../domain/usecases/src/auth/login_usecase.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final _loginUsecase = GetIt.instance<LoginUsecase>();
-  final _apiHeader = GetIt.instance<ApiHeader>();
+  final LoginUsecase usecase;
+  //final _apiHeader = GetIt.instance<ApiHeader>();
 
-  LoginCubit() : super(const LoginStateInitial());
+  LoginCubit({required this.usecase}) : super(const LoginStateInitial());
 
   Future<void> login({
-    required String email,
+    required String username,
     required String password,
   }) async {
     try {
       emit(const LoginStateLoading());
 
-      final result = await _loginUsecase(
-        LoginParams(
-          email: email,
-          password: password,
-        ),
-      );
+      final result = await usecase
+          .call(LoginParams(username: username, password: password));
 
       result.fold(
-        (error) => emit(LoginStateError(error.toString())),
-        (response) async {
-          if (response?.accessToken != null) {
-            await _apiHeader.setAccessToken(response!.accessToken!);
-            if (response.refreshToken != null) {
-              await _apiHeader.setRefreshToken(response.refreshToken!);
-            }
-            emit(const LoginStateSuccess());
+        (l) {
+          if (l is DioException) {
+            final String? message = ApiResponse.getMessageFromException(l);
+            emit(LoginStateError(message ?? ''));
           } else {
-            emit(const LoginStateError('Login failed'));
+            emit(LoginStateError(messageFromException(l)));
           }
+        },
+        (r) {
+          emit(const LoginStateSuccess());
         },
       );
     } catch (e) {

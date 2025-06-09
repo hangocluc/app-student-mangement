@@ -40,45 +40,40 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
+      designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
-      designSize: const Size(375, 812),
-      child: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: MultiBlocProvider(
+      builder: (context, child) {
+        return MultiBlocProvider(
           providers: _appBlocProviders(),
-          child: BlocBuilder<DemoCubit, DemoState>(
-            builder: (context, state) {
-              return GetMaterialApp(
-                builder: (context, child) {
-                  child = OverlayWidget.init()(context, child);
-                  child = EasyLoading.init()(context, child);
-                  return MediaQuery(
-                    data: MediaQuery.of(context)
-                        .copyWith(textScaler: TextScaler.noScaling),
-                    child: child,
-                  );
-                },
-                debugShowCheckedModeBanner: false,
-                themeMode: (state is ThemeStateSuccess)
-                    ? state.themeMode
-                    : ThemeMode.dark,
-                theme: ThemeData.light(),
-                darkTheme: ThemeData.dark(),
-                initialRoute: RouteName.root,
-                navigatorObservers: [AppRouterTracking()],
-                navigatorKey: getNavigatorKeyByEnv(),
-                onGenerateRoute: GenerateRoute.generateRoute,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                locale: const Locale('en'),
+          child: GetMaterialApp(
+            title: 'Student Management',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            onGenerateRoute: GenerateRoute.generateRoute,
+            initialRoute: RouteName.root,
+            navigatorObservers: [
+              AppRouterTracking(),
+            ],
+            builder: (context, child) {
+              child = OverlayWidget.init()(context, child);
+              child = EasyLoading.init()(context, child);
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaler: TextScaler.noScaling,
+                ),
+                child: child ?? const SizedBox(),
               );
             },
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

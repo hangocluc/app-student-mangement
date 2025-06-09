@@ -30,6 +30,22 @@
   "@enterPassword": {
     "description": "Password hint text"
   },
+    "userName": "UserName",
+  "@userName": {
+    "description": "UserName label"
+  },
+  "enterUserName": "Enter your UserName",
+  "@enterUserName": {
+    "description": "UserName hint text"
+  },
+  "pleaseEnterUserName": "Please enter your UserName",
+  "@pleaseEnterUserName": {
+    "description": "UserName validation message"
+  },
+  "pleaseEnterValidUserName": "Please enter a valid UserName",
+  "@pleaseEnterValidUserName": {
+    "description": "UserName format validation message"
+  },
   "signIn": "サインイン",
   "@signIn": {
     "description": "Sign in button text"

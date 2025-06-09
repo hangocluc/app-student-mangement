@@ -1,3 +1,4 @@
+import 'package:base_bloc_cubit/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,40 +30,66 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
-
+  final _emailErrorText = ValueNotifier<String?>(null);
+  final _passwordErrorText = ValueNotifier<String?>(null);
+  final loginCubit = sl.get<LoginCubit>();
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _emailErrorText.dispose();
+    _passwordErrorText.dispose();
     super.dispose();
+  }
+
+  bool _validateForm() {
+    bool isValid = true;
+
+    if (_emailController.text.isEmpty) {
+      _emailErrorText.value = context.l10n.pleaseEnterUserName;
+      isValid = false;
+    } else {
+      _emailErrorText.value = null;
+    }
+
+    if (_passwordController.text.isEmpty) {
+      _passwordErrorText.value = context.l10n.pleaseEnterPassword;
+      isValid = false;
+    } else if (_passwordController.text.length < 6) {
+      _passwordErrorText.value = context.l10n.passwordMinLength;
+      isValid = false;
+    } else {
+      _passwordErrorText.value = null;
+    }
+
+    return isValid;
+  }
+
+  _listenCubit(BuildContext context, LoginState state) {
+    switch (state) {
+      case LoginStateInitial():
+        dismissLoadingOverlay(context);
+      case LoginStateLoading():
+        showLoadingOverlay(context);
+      case LoginStateError():
+        dismissLoadingOverlay(context);
+        showToastError(context, state.message);
+      case LoginStateSuccess():
+        dismissLoadingOverlay(context);
+        setState(() {});
+        Navigator.popAndPushNamed(context, RouteName.home);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginCubit(),
-      child: BlocConsumer<LoginCubit, LoginState>(
-        listener: (context, state) {
-          if (state is LoginStateLoading) {
-            showLoadingOverlay(context);
-          } else {
-            dismissLoadingOverlay(context);
-          }
-
-          if (state is LoginStateSuccess) {
-            showToastSuccess(context, context.l10n.loginSuccess);
-            Navigator.pushReplacementNamed(
-              context,
-              RouteName.home,
-            );
-          }
-
-          if (state is LoginStateError) {
-            showToastError(context, state.message);
-          }
-        },
-        builder: (context, state) {
-          return Scaffold(
+      create: (context) => loginCubit,
+      child: BlocListener<LoginCubit, LoginState>(
+          listener: (context, state) {
+            _listenCubit(context, state);
+          },
+          child: Scaffold(
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
@@ -101,20 +128,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 32.h),
                         // Email field
                         AppCustomTextField(
-                          title: context.l10n.email,
-                          hintText: context.l10n.enterEmail,
+                          title: context.l10n.userName,
+                          hintText: context.l10n.enterUserName,
                           controller: _emailController,
                           prefixIcon: Assets.icons.icMail.path,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return context.l10n.pleaseEnterEmail;
-                            }
-                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                .hasMatch(value)) {
-                              return context.l10n.pleaseEnterValidEmail;
-                            }
-                            return null;
-                          },
+                          errorText: _emailErrorText,
                         ),
                         SizedBox(height: 16.h),
                         // Password field
@@ -132,27 +150,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               _obscurePassword = !_obscurePassword;
                             });
                           },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return context.l10n.pleaseEnterPassword;
-                            }
-                            if (value.length < 6) {
-                              return context.l10n.passwordMinLength;
-                            }
-                            return null;
-                          },
+                          errorText: _passwordErrorText,
                         ),
                         SizedBox(height: 24.h),
                         // Login button
                         AppButton(
                           onTap: () {
-                            // if (_formKey.currentState?.validate() ?? false) {
-                            //   context.read<LoginCubit>().login(
-                            //         email: _emailController.text,
-                            //         password: _passwordController.text,
-                            //       );
-                            // }
-                            Navigator.pushReplacementNamed(context, RouteName.home);
+                            if (_validateForm()) {
+                              loginCubit.login(
+                                  username: _emailController.text,
+                                  password: _passwordController.text);
+                            }
                           },
                           title: context.l10n.signIn,
                           height: 48.h,
@@ -181,9 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-          );
-        },
-      ),
+          )),
     );
   }
 }

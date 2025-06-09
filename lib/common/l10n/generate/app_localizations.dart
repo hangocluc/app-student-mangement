@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
 import 'app_localizations_ja.dart';
+import 'app_localizations_vi.dart';
 
 // ignore_for_file: type=lint
 
@@ -92,7 +93,8 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('ja')
+    Locale('ja'),
+    Locale('vi')
   ];
 
   /// No description provided for @appTitle.
@@ -148,6 +150,30 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'パスワードを入力してください'**
   String get enterPassword;
+
+  /// UserName label
+  ///
+  /// In ja, this message translates to:
+  /// **'UserName'**
+  String get userName;
+
+  /// UserName hint text
+  ///
+  /// In ja, this message translates to:
+  /// **'Enter your UserName'**
+  String get enterUserName;
+
+  /// UserName validation message
+  ///
+  /// In ja, this message translates to:
+  /// **'Please enter your UserName'**
+  String get pleaseEnterUserName;
+
+  /// UserName format validation message
+  ///
+  /// In ja, this message translates to:
+  /// **'Please enter a valid UserName'**
+  String get pleaseEnterValidUserName;
 
   /// Sign in button text
   ///
@@ -345,7 +371,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'ja'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'ja', 'vi'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -358,6 +384,7 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en': return AppLocalizationsEn();
     case 'ja': return AppLocalizationsJa();
+    case 'vi': return AppLocalizationsVi();
   }
 
   throw FlutterError(

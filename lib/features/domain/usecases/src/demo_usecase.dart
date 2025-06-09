@@ -21,9 +21,9 @@ class DemoUsecase extends BaseUseCase<DemoEntity?, NoParams?> {
     }
   }
 
-  Future<Either<Exception, List<StudentEntity>?>> getStudents() async {
+  Future<Either<Exception, List<StudentEntity>?>> getStudents(params) async {
     try {
-      final response = await repository.getStudents();
+      final response = await repository.getStudents(maSV: params);
       return Right(response);
     } on Exception catch (error) {
       return Left(error);

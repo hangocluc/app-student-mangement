@@ -27,9 +27,9 @@ class DemoRepositoryImpl implements DemoRepository {
   }
 
   @override
-  Future<List<StudentModel>?> getStudents() async {
+  Future<List<StudentModel>?> getStudents({String? maSV}) async {
     try {
-      final response = await demoService.getStudents();
+      final response = await demoService.getStudents(maSV);
       if (response.isSuccessResponse) {
         return response.data;
       }
@@ -80,12 +80,11 @@ class DemoRepositoryImpl implements DemoRepository {
   Future<bool?> updateStudents({required StudentModel student}) async {
     try {
       final response = await demoService.updateStudents(
-        student.name ?? '',
-        student.dateOfBirth ?? '',
-        student.gender ?? '',
-        student.classCode ?? '',
-        student.studentId ?? ''
-      );
+          student.name ?? '',
+          student.dateOfBirth ?? '',
+          student.gender ?? '',
+          student.classCode ?? '',
+          student.studentId ?? '');
       if (response.isSuccessResponse) {
         return true;
       }

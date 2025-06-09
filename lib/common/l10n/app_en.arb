@@ -6,7 +6,7 @@
   "@appName": {
     "description": "The name of the application"
   },
-  "welcomeBack": "Welcome Back!",
+  "welcomeBack": "Welcome Back",
   "@welcomeBack": {
     "description": "Welcome back message on login screen"
   },
@@ -21,6 +21,14 @@
   "enterEmail": "Enter your email",
   "@enterEmail": {
     "description": "Email hint text"
+  },
+  "userName": "Username",
+  "@userName": {
+    "description": "UserName label"
+  },
+  "enterUserName": "Enter your username",
+  "@enterUserName": {
+    "description": "UserName hint text"
   },
   "password": "Password",
   "@password": {
@@ -50,6 +58,14 @@
   "@pleaseEnterValidEmail": {
     "description": "Email format validation message"
   },
+  "pleaseEnterUserName": "Please enter your username",
+  "@pleaseEnterUserName": {
+    "description": "UserName validation message"
+  },
+  "pleaseEnterValidUserName": "Please enter a valid UserName",
+  "@pleaseEnterValidUserName": {
+    "description": "UserName format validation message"
+  },
   "pleaseEnterPassword": "Please enter your password",
   "@pleaseEnterPassword": {
     "description": "Password validation message"
@@ -62,7 +78,7 @@
   "noStudentsFound": "No students found",
   "addNewStudent": "Add New Student",
   "studentId": "Student ID",
-  "className": "Class",
+  "className": "Class Name",
   "deleteStudent": "Delete Student",
   "deleteStudentConfirm": "Are you sure you want to delete this student?",
   "cancel": "Cancel",
@@ -81,5 +97,7 @@
   "address": "Address",
   "enterAddress": "Enter address",
   "selectDateOfBirth": "Select date of birth",
-  "save": "Save"
+  "save": "Save",
+  "logout": "Logout",
+  "logoutConfirmation": "Are you sure you want to logout?"
 } 

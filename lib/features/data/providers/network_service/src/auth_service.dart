@@ -15,7 +15,9 @@ part 'auth_service.g.dart';
 abstract class AuthService {
   factory AuthService(Dio dio, {String baseUrl}) = _AuthService;
 
-  @GET(DemoApiPath.demo)
-  Future<ApiResponse<LoginResponseModel>> login(
-      @Body() LoginRequestModel request);
+  @POST(DemoApiPath.login)
+  Future<ApiResponse<LoginResponseModel?>> login(
+    @Field("username") String username,
+    @Field("password") String password,
+  );
 }
