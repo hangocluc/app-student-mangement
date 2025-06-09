@@ -56,7 +56,8 @@ class HandleErrorInterceptor extends Interceptor {
     }
 
     if (apiException.statusCode == 401) {
-      _handleLogout(err, handler, apiHeader, shouldLogout);
+      // _handleLogout(err, handler, apiHeader, shouldLogout);
+      return handler.next(error);
     }
     if (apiException.statusCode != 401) {
       return handler.next(error);
