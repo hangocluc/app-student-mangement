@@ -24,7 +24,7 @@ class LoginUsecase extends BaseUseCase<LoginResponseModel?, LoginParams> {
     try {
       final response = await repository.login(
           username: params.username, password: params.password);
-      return Right(response?.data);
+      return Right(response.data);
     } on Exception catch (error) {
       return Left(error);
     }

@@ -198,8 +198,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                           // Close the cubit before navigation
                           // Create a new LoginCubit instance
                           // Navigate to login screen with new cubit
-                          Navigator.pushReplacementNamed(
-                              context, RouteName.root);
+                          _handleBackToLogin(context);
                         },
                         child: AppText(
                           title: 'Logout',
@@ -457,4 +456,20 @@ class _StudentListScreenState extends State<StudentListScreen> {
       ),
     );
   }
+}
+
+_handleBackToLogin(BuildContext context) {
+  //dismissLoadingOverlay(context);
+  final loginCubit = sl.get<LoginCubit>();
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (context) => BlocProvider(
+        create: (_) => loginCubit,
+        child: const LoginScreen(),
+      ),
+    ),
+    (route) => false,
+  );
+  Future.delayed(const Duration(seconds: 2), () {});
 }

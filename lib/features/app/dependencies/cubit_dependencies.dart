@@ -7,10 +7,10 @@ Future<void> registerCubitDI(GetIt sl) async {
   sl.registerLazySingleton(
     () => DemoCubit(usecase: sl.get(), sharedPreferences: sl.get()),
   );
-  sl.registerLazySingleton(
+  sl.registerFactory(
     () => StudentCubit(usecase: sl.get()),
   );
-  sl.registerLazySingleton(
+  sl.registerFactory(
     () => LoginCubit(usecase: sl.get()),
   );
 }
