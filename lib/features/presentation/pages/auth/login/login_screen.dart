@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
       case LoginStateSuccess():
         dismissLoadingOverlay(context);
         setState(() {});
-        Navigator.popAndPushNamed(context, RouteName.home);
+        Navigator.pushReplacementNamed(context, RouteName.home);
     }
   }
 

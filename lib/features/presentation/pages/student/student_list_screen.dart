@@ -34,7 +34,6 @@ class _StudentListScreenState extends State<StudentListScreen> {
   final _searchController = TextEditingController();
   final cubit = sl.get<StudentCubit>();
 
-  //
   List<StudentModel> studentsUI = [];
 
   @override
@@ -97,7 +96,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Search student name...',
+                    hintText: 'Search student code...',
                     hintStyle: AppTypography().bodyMediumRegular.copyWith(
                           color: AppColors.theBlack.theBlack400,
                         ),
@@ -195,9 +194,6 @@ class _StudentListScreenState extends State<StudentListScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          // Close the cubit before navigation
-                          // Create a new LoginCubit instance
-                          // Navigate to login screen with new cubit
                           _handleBackToLogin(context);
                         },
                         child: AppText(
